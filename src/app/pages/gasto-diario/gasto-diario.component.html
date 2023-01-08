@@ -1,0 +1,118 @@
+<mat-card class="example-card">
+  <div class="container" fxLayout="row" fxLayoutAlign="center" fxLayoutGap="10px">
+    <div class="item item-1" fxFlex="90%">
+      <h3 style="font-size: 24px; color: #004F91; text-align: center;"> <b>GASTO DIARIO DE CONSULTA AMIGABLE DEL MEF</b>
+      </h3>
+    </div>
+  </div>
+  <br>
+  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px"
+    fxLayoutGap.xs="5px">
+    <div class="item item-1" fxFlex="25%">
+      <mat-form-field>
+        <mat-label>AÑO</mat-label>
+        <input matInput placeholder="YYYY" [(ngModel)]="formBuscar.numAnio" name="numAnio" #anioInput="ngModel"
+          maxlength=4 minlength="4" (keypress)="numberOnly($event)" required>
+        <mat-error>El password debe tener mas de 4 caracteres</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="item item-2" fxFlex="25%">
+      <mat-form-field>
+        <mat-label>MES</mat-label>
+        <mat-select [(ngModel)]="formBuscar.numMes" name="numMes">
+          <mat-option *ngFor="let item of listaMes" [value]="item.codigo">
+            {{ item.descripcion }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="item item-3" fxFlex="25%">
+      <button mat-raised-button type="button" style="background-color: #AFCA0D; color:#fff;" (click)="btnBuscar()">
+        <mat-icon>search</mat-icon>Buscar
+      </button>
+    </div>
+    <div class="item item-4" fxFlex="25%">
+      <button mat-raised-button type="button" style="background-color: #004f91; color: #ffffff" (click)="btnLimpiar()">
+        <mat-icon>clear</mat-icon>Limpiar
+      </button>
+    </div>
+
+  </div>
+  <br>
+  <div *ngIf="loading$ | async" class="loading-shades" style="margin-left: 50%;">
+    <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+  </div>
+  <div class="container scroll-table-container" fxLayout="column" fxLayoutAlign="center" fxLayoutGap="5px">
+    <table mat-table [dataSource]="dataSource || []" class="mat-elevation-z8" style="width: 110%;">
+
+      <ng-container matColumnDef="anoEje">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> AÑO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.anoEje}} </td>
+      </ng-container>
+      <ng-container matColumnDef="mesEje">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> MES </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.mesEje}} </td>
+      </ng-container>
+      <ng-container matColumnDef="nivelGobiernoNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> NIVEL GOBIERNO</th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.nivelGobiernoNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="sectorNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> SECTOR </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.sectorNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="pliegoNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> PLIEGO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.pliegoNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="departamentoEjecutoraNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> DEPARTAMENTO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.departamentoEjecutoraNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="provinciaEjecutoraNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> PROVINCIA </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.provinciaEjecutoraNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="distritoEjecutoraNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> DISTRITO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.distritoEjecutoraNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="programaPptoNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> PROGRAMA </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.programaPptoNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="especificaDetNombre">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> ESPECIFICACIONES </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.especificaDetNombre}} </td>
+      </ng-container>
+      <ng-container matColumnDef="montoCertificado">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> MONTO CERTIFICADO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.montoCertificado | number : '1.2-2'}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="montoComprometidoAnual">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> MONTO COMPROMETIDO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.montoComprometidoAnual | number :
+          '1.2-2'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="montoGirado">
+        <th mat-header-cell *matHeaderCellDef class="spaceColumn titleColumn"> MONTO GIRADO </th>
+        <td mat-cell *matCellDef="let element" class="spaceColumn"> {{element.montoGirado | number : '1.2-2'}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div *ngIf="!tieneData" style="border: solid 0px;padding: 10px;">
+      <div style="text-align: center;">
+        <div class="text-info">
+          <div style="color:#BDBDC4; font-size: 20px;">No se encontraron registros.</div>
+        </div>
+      </div>
+    </div>
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+      (page)="cambiarPage($event)" showFirstLastButtons="true" aria-label="Select page" class="mat-elevation-z8"
+      style="width: 110%;">
+    </mat-paginator>
+
+  </div>
+</mat-card>

@@ -1,0 +1,21 @@
+table {
+    width: 100%;
+  }
+
+  .spaceColumn{
+    padding-right: 7px
+  }
+
+  .scroll-table-container {
+    position: relative;
+    max-height: 100%;
+    overflow: auto;
+  }
+  .mat-paginator {
+    display: flex;
+    justify-content: center;
+  }
+  .titleColumn{
+    font-weight: bold;
+    color: #004F91;
+  }

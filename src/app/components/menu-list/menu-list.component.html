@@ -1,0 +1,29 @@
+<mat-nav-list class="colorDos">
+
+        <a *ngIf="isAuthorized"  mat-list-item (click)="closeMenu()" routerLink="/">
+          <mat-icon class="colorTextoMenuLateral">home</mat-icon>
+          <span class="navegacion-list-label colorTextoMenuLateral">Home</span>
+        </a>
+      
+        <a *ngIf="!isAuthorized" mat-list-item (click)="closeMenu()" routerLink="pages/login">
+          <mat-icon class="colorTextoMenuLateral">login</mat-icon>
+          <span class="navegacion-list-label colorTextoMenuLateral">Inicio Sesion</span>
+        </a>
+      
+        <a *ngIf="!isAuthorized" mat-list-item (click)="closeMenu()" routerLink="pages/registration">
+          <mat-icon class="colorTextoMenuLateral">how_to_register</mat-icon>
+          <span class="navegacion-list-label colorTextoMenuLateral">Registrar</span>
+        </a>
+    
+        <a *ngIf="isAuthorized" mat-list-item (click)="closeMenu()" routerLink="pages/gasto-diario">
+            <mat-icon class="colorTextoMenuLateral">how_to_register</mat-icon>
+            <span class="navegacion-list-label colorTextoMenuLateral">Gasto Diario</span>
+        </a>  
+         
+        <a *ngIf="isAuthorized" mat-list-item (click)="onSignOut()" (click)="closeMenu()">
+          <mat-icon class="colorTextoMenuLateral">logout</mat-icon>
+          <span class="navegacion-list-label colorTextoMenuLateral">Salir Sesion</span>
+        </a>
+ </mat-nav-list>
+      
+    
